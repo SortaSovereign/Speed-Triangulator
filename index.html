@@ -56,7 +56,7 @@
 
     /* Keep numeric entry boxes neatly bound inside the panel */
     .row input[type="number"]{
-      width:120px; max-width:120px;
+      width:70px; max-width:70px;
       background:#0e1620; color:var(--text);
       border:1px solid #26374b; border-radius:8px;
       padding:7px 8px;
@@ -609,7 +609,7 @@
       ln.setAttribute('stroke-dasharray', (deg%30===0) ? '4 6' : '2 7');
       scopeG.appendChild(ln);
 
-      const labelKyd = outerKyd * 0.58;
+      const labelKyd = outerKyd + 0.35;
       const pLab = navToSvg({ x:u.x*labelKyd, y:u.y*labelKyd }, pxPerKyd);
 
       const tx = document.createElementNS("http://www.w3.org/2000/svg","text");
@@ -619,7 +619,7 @@
       tx.setAttribute('dominant-baseline','middle');
       tx.setAttribute('font-size', (deg%30===0) ? '11' : '10');
       tx.setAttribute('fill','var(--muted)');
-      tx.setAttribute('opacity', (deg%30===0) ? '0.75' : '0.45');
+      tx.setAttribute('opacity', (deg%30===0) ? '0.85' : '0.5');
       tx.textContent = String(deg).padStart(3,'0');
       scopeG.appendChild(tx);
     }
@@ -648,14 +648,9 @@
     }
 
     // 3) Cardinal ticks at outer ring
-    const cardinals = [
-      {deg:0, label:'000'},
-      {deg:90, label:'090'},
-      {deg:180, label:'180'},
-      {deg:270, label:'270'},
-    ];
+    const cardinals = [0, 90, 180, 270];
 
-    cardinals.forEach(({deg,label})=>{
+    cardinals.forEach((deg)=>{
       const u = courseToVec(deg);
       const p1 = navToSvg({x:u.x*outerKyd, y:u.y*outerKyd}, pxPerKyd);
       const p0 = navToSvg({x:u.x*(outerKyd-0.6), y:u.y*(outerKyd-0.6)}, pxPerKyd);
@@ -667,15 +662,6 @@
       ln.setAttribute('stroke-width','2');
       ln.setAttribute('opacity','0.95');
       scopeG.appendChild(ln);
-
-      const tx = document.createElementNS("http://www.w3.org/2000/svg","text");
-      tx.setAttribute('x', p1.x + (deg===90? 8 : deg===270? -30 : -14));
-      tx.setAttribute('y', p1.y + (deg===0? -8 : deg===180? 20 : 4));
-      tx.setAttribute('font-size','12');
-      tx.setAttribute('fill','var(--muted)');
-      tx.setAttribute('opacity','0.9');
-      tx.textContent = label;
-      scopeG.appendChild(tx);
     });
   }
 
