@@ -761,7 +761,7 @@
     const rS = navToSvg(R, pxPerKyd);
     const mS = mTipSvg;
 
-    setCircle(ptE,eS); setCircle(ptMBase,mBaseSvg); setCircle(ptR,rS); setCircle(ptM,mS);
+    setCircle(ptE,eS); setCircle(ptR,rS); setCircle(ptM,mS);
     setLabel(labE,eS,'e'); setLabel(labR,rS,'R'); setLabel(labM,mS,'M');
     flag.setAttribute('transform',`translate(${eS.x},${eS.y})`);
 
@@ -906,15 +906,12 @@
     if(which==='R'){
       state.own.c = ((Math.round(crs)%360)+360)%360;
       state.own.s = spKtsSnapped;
-    } else if(which==='M') {
+    } else {
       state.tgt.c = ((Math.round(crs)%360)+360)%360;
       state.tgt.s = spKtsSnapped;
 
       const newPos = { x: pNav.x - vecNav.x, y: pNav.y - vecNav.y };
       setTgtPosPolarFromNav(newPos);
-      resetSim();
-    } else if(which==='MB') {
-      setTgtPosPolarFromNav(pNav);
       resetSim();
     }
     render();
