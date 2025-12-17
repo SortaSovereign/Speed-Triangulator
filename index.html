@@ -18,129 +18,140 @@
   -->
 
   <style>
-    :root{
-      --bg:#0b0f14;
-      --panel:#121a24;
-      --text:#e8eef6;
-      --muted:#9fb0c3;
-      --grid:#1d2a3a;
+  :root{
+    --bg:#0b0f14;
+    --panel:#121a24;
+    --text:#e8eef6;
+    --muted:#9fb0c3;
+    --grid:#1d2a3a;
 
-      --own:#3ddc97;
-      --tgt:#ff6b6b;
-      --rel:#61a5ff;
-      --accent:#f7d774;
-      --contact:#d9d9d9;
-    }
+    --own:#3ddc97;
+    --tgt:#ff6b6b;
+    --rel:#61a5ff;
+    --accent:#f7d774;
+    --contact:#d9d9d9;
+  }
 
-    html,body{height:100%; margin:0; background:var(--bg); color:var(--text); font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
-    *, *:before, *:after { box-sizing:border-box; }
+  html,body{height:100%; margin:0; background:var(--bg); color:var(--text); font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+  *, *:before, *:after { box-sizing:border-box; }
 
-    .wrap{display:grid; grid-template-columns: 440px 1fr; gap:14px; height:100%; padding:14px;}
+  .wrap{display:grid; grid-template-columns: 440px 1fr; gap:14px; height:100%; padding:14px;}
 
-    .panel{
-      background:var(--panel);
-      border:1px solid #1b2838;
-      border-radius:12px;
-      padding:14px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.35);
-      overflow:auto;
-      min-width: 320px;
-    }
-    h1{font-size:16px; margin:0 0 10px 0;}
-    h2{font-size:13px; margin:14px 0 8px 0; color:var(--text);}
-    .small{color:var(--muted); font-size:12px; line-height:1.35;}
+  .panel{
+    background:var(--panel);
+    border:1px solid #1b2838;
+    border-radius:12px;
+    padding:14px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    overflow:auto;
+    min-width: 320px;
+  }
+  h1{font-size:16px; margin:0 0 10px 0;}
+  h2{font-size:13px; margin:14px 0 8px 0; color:var(--text);}
+  .small{color:var(--muted); font-size:12px; line-height:1.35;}
 
-    .row{display:flex; gap:10px; align-items:center; margin:10px 0; min-width:0;}
-    .row label{flex:1; font-size:13px; min-width:0;}
-    .row input[type="range"]{flex:1.2; min-width:0;}
+  /* Flex rows (keep the original look) */
+  .row{display:flex; gap:8px; align-items:center; margin:10px 0; min-width:0;}
+  .row label{flex:1; font-size:13px; min-width:0;}
+  .row input[type="range"]{flex:1 1 160px; min-width:0;}
 
-    /* Keep numeric entry boxes neatly bound inside the panel */
-    .row input[type="number"]{
-      width:70px; max-width:70px;
-      background:#0e1620; color:var(--text);
-      border:1px solid #26374b; border-radius:8px;
-      padding:7px 8px;
-      min-width:0;
-    }
-    .row select, .row button{
-      background:#0e1620; color:var(--text);
-      border:1px solid #26374b; border-radius:10px;
-      padding:9px 10px;
-    }
-    .row button{cursor:pointer; user-select:none; white-space:nowrap;}
-    .row button:hover{border-color:#3a5470;}
-    .row button.primary{border-color:#3a5470;}
+  .row input[type="number"]{
+    width:55px;
+    min-width:55px;
+    max-width:60px;
+    background:#0e1620;
+    color:var(--text);
+    border:1px solid #26374b;
+    border-radius:8px;
+    padding:6px 6px;
+    text-align:left;
+    box-sizing:border-box;
+    margin-right:6px; /* consistent breathing room from the tile edge */
+  }
 
-    .box{
-      margin-top:10px; padding:10px;
-      border:1px solid #1b2838; border-radius:10px; background:#0e1620;
-    }
+  .row select, .row button{
+    background:#0e1620; color:var(--text);
+    border:1px solid #26374b; border-radius:10px;
+    padding:9px 10px;
+  }
 
-    .legend{margin-top:12px; display:grid; gap:8px; font-size:13px;}
-    .legItem{display:flex; align-items:center; gap:10px;}
-    .swatch{width:14px; height:14px; border-radius:4px;}
-    .swatch.own{background:var(--own);}
-    .swatch.tgt{background:var(--tgt);}
-    .swatch.rel{background:var(--rel);}
-    .swatch.ct{background:var(--contact);}
-    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; padding:2px 6px; border:1px solid #2b3f57; border-radius:6px; color:var(--muted);}
+  .row button{cursor:pointer; user-select:none; white-space:nowrap;}
+  .row button:hover{border-color:#3a5470;}
+  .row button.primary{border-color:#3a5470;}
 
-    .viz{
-      background: radial-gradient(1200px 700px at 50% 40%, rgba(97,165,255,.08), transparent 55%),
-                  linear-gradient(180deg, rgba(255,255,255,.03), transparent 30%);
-      border:1px solid #1b2838;
-      border-radius:12px;
-      overflow:hidden;
-      position:relative;
-      min-height:520px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.35);
-    }
-    .badge{
-      position:absolute; top:12px; left:12px;
-      background:rgba(14,22,32,.85);
-      border:1px solid #26374b;
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:12px; color:var(--muted);
-      display:flex; gap:10px; align-items:center;
-      backdrop-filter: blur(6px);
-      user-select:none;
-      z-index:3;
-    }
-    .badge b{color:var(--text); font-weight:600;}
+  .box{
+    margin-top:10px;
+    padding:10px 18px 10px 10px; /* extra right padding inside the dark tile */
+    border:1px solid #1b2838;
+    border-radius:10px;
+    background:#0e1620;
+  }
 
-    .scopeNote{
-      position:absolute;
-      right:12px;
-      bottom:12px;
-      background:rgba(14,22,32,.85);
-      border:1px solid #26374b;
-      border-radius:10px;
-      padding:8px 10px;
-      font-size:12px;
-      color:var(--muted);
-      backdrop-filter: blur(6px);
-      user-select:none;
-      z-index:3;
-      max-width: 380px;
-      text-align:right;
-      line-height:1.25;
-    }
+  .legend{margin-top:12px; display:grid; gap:8px; font-size:13px;}
+  .legItem{display:flex; align-items:center; gap:10px;}
+  .swatch{width:14px; height:14px; border-radius:4px;}
+  .swatch.own{background:var(--own);}
+  .swatch.tgt{background:var(--tgt);}
+  .swatch.rel{background:var(--rel);}
+  .swatch.ct{background:var(--contact);}
+  .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; padding:2px 6px; border:1px solid #2b3f57; border-radius:6px; color:var(--muted);}
 
-    /* Course wheel */
-    .dialRow{
-      display:grid;
-      grid-template-columns: 110px 1fr;
-      gap:12px;
-      align-items:center;
-      margin:10px 0;
-      min-width:0;
-    }
-    .dialWrap{width:110px; height:110px; display:flex; align-items:center; justify-content:center;}
-    .dial svg{overflow:visible; touch-action:none;}
-    .dial text{user-select:none;}
-    .dialHint{color:var(--muted); font-size:12px; margin-top:6px;}
-  </style>
+  .viz{
+    background: radial-gradient(1200px 700px at 50% 40%, rgba(97,165,255,.08), transparent 55%),
+                linear-gradient(180deg, rgba(255,255,255,.03), transparent 30%);
+    border:1px solid #1b2838;
+    border-radius:12px;
+    overflow:hidden;
+    position:relative;
+    min-height:520px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  }
+  .badge{
+    position:absolute; top:12px; left:12px;
+    background:rgba(14,22,32,.85);
+    border:1px solid #26374b;
+    border-radius:999px;
+    padding:7px 10px;
+    font-size:12px; color:var(--muted);
+    display:flex; gap:10px; align-items:center;
+    backdrop-filter: blur(6px);
+    user-select:none;
+    z-index:3;
+  }
+  .badge b{color:var(--text); font-weight:600;}
+
+  .scopeNote{
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    background:rgba(14,22,32,.85);
+    border:1px solid #26374b;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:12px;
+    color:var(--muted);
+    backdrop-filter: blur(6px);
+    user-select:none;
+    z-index:3;
+    max-width: 380px;
+    text-align:right;
+    line-height:1.25;
+  }
+
+  /* Course wheel */
+  .dialRow{
+    display:grid;
+    grid-template-columns: 110px 1fr;
+    gap:12px;
+    align-items:center;
+    margin:10px 0;
+    min-width:0;
+  }
+  .dialWrap{width:110px; height:110px; display:flex; align-items:center; justify-content:center;}
+  .dial svg{overflow:visible; touch-action:none;}
+  .dial text{user-select:none;}
+  .dialHint{color:var(--muted); font-size:12px; margin-top:6px;}
+</style>
 </head>
 
 <body>
@@ -205,7 +216,7 @@
     </div>
 
     <div class="box">
-      <div class="small" style="margin-bottom:8px;"><b>Own / True Vector</b></div>
+      <div class="small" style="margin-bottom:8px;"><b id="ownBoxTitle">Own / True Vector</b></div>
       <div class="dialRow">
         <div class="dialWrap"><div class="dial" id="ownDial"></div></div>
         <div>
@@ -224,7 +235,7 @@
     </div>
 
     <div class="box">
-      <div class="small" style="margin-bottom:8px;"><b>Other Ship / Guide Vector</b></div>
+      <div class="small" style="margin-bottom:8px;"><b id="tgtBoxTitle">Other Ship / Guide Vector</b></div>
       <div class="dialRow">
         <div class="dialWrap"><div class="dial" id="tgtDial"></div></div>
         <div>
@@ -237,23 +248,13 @@
             <input id="tgtS" type="range" min="0" max="35" step="0.5" value="10" />
             <input id="tgtSNum" type="number" min="0" max="35" step="0.5" value="10" />
           </div>
-          <div class="row">
-            <label>Bearing (°T)</label>
-            <input id="tgtB" type="range" min="0" max="359" step="1" value="0" />
-            <input id="tgtBNum" type="number" min="0" max="359" step="1" value="0" />
-          </div>
-          <div class="row">
-            <label>Range (kyd)</label>
-            <input id="tgtR" type="range" min="0" max="60" step="0.1" value="0" />
-            <input id="tgtRNum" type="number" min="0" max="60" step="0.1" value="0" />
-          </div>
           <div class="dialHint">Drag the needle to set course.</div>
         </div>
       </div>
     </div>
 
     <div class="box">
-      <div class="small" style="margin-bottom:8px;"><b>Initial Contact Position</b></div>
+      <div class="small" style="margin-bottom:8px;"><b id="contactBoxTitle">Initial Contact Position</b></div>
       <div class="row">
         <label>Bearing (°T)</label>
         <input id="ctB" type="range" min="0" max="359" step="1" value="320" />
@@ -264,7 +265,7 @@
         <input id="ctR" type="range" min="0" max="60" step="0.1" value="6.0" />
         <input id="ctRNum" type="number" min="0" max="60" step="0.1" value="6.0" />
       </div>
-      <div class="small">Range is expressed in <b>thousands of yards</b> (kyd).</div>
+      <div class="small" id="contactBoxNote">Range is expressed in <b>thousands of yards</b> (kyd).</div>
     </div>
 
     <div class="legend">
@@ -329,7 +330,6 @@
 
       <g>
         <circle id="ptE" cx="0" cy="0" r="6" fill="#ffffff"/>
-        <circle id="ptMBase" cx="0" cy="0" r="6" fill="#ffffff" stroke="#0b0f14" stroke-width="2" cursor="grab" opacity="0.85"/>
         <circle id="ptR" cx="0" cy="0" r="7" fill="var(--own)" stroke="#0b0f14" stroke-width="2" cursor="grab"/>
         <circle id="ptM" cx="0" cy="0" r="7" fill="var(--tgt)" stroke="#0b0f14" stroke-width="2" cursor="grab"/>
       </g>
@@ -345,7 +345,7 @@
         <path d="M 0 -28 L 26 -22 L 0 -16 Z" fill="var(--accent)"/>
       </g>
 
-      <g transform="translate(-340,285)" font-size="12" fill="var(--muted)">
+      <g transform="translate(-340,275)" font-size="12" fill="var(--muted)">
         <text id="ro1" x="0" y="0"></text>
         <text id="ro2" x="0" y="18"></text>
         <text id="ro3" x="0" y="36"></text>
@@ -392,53 +392,65 @@
   const VECTOR_TIME_HR = VECTOR_TIME_MIN / 60;
 
   // ---------- State ----------
+  // Semantic: state.own is "our ship", state.tgt is "other/guide".
+  // UI swaps which one is shown in which control panel when stationing mode is selected.
   const state = {
     mode: 'speed',
 
     // Range ring settings:
     // - ringPx controls spacing between adjacent rings (pixels per ring)
-    // - rangeScale controls label values in kyd (thousands of yards) per ring (labels only)
-    rangeScale: 1,     // 1×..5× (label step)
-    ringPx: 28,        // pixels per ring
+    // - rangeScale controls label values (labels only)
+    rangeScale: 1,
+    ringPx: 28,
 
     own: { c: 90, s: 5 },   // knots
     tgt: { c: 45, s: 10 },  // knots
-    tgtPos: { brg: 0, rngKyd: 0 },
-    tgtPosNavKyd: {x:0,y:0},
-    contact0: { brg: 320, rngKyd: 6.0 }, // initial contact range in kyd
+
+    // White marker: in Speed mode = contact relative position.
+    // In Stationing mode = OUR position relative to the guide.
+    contact0: { brg: 320, rngKyd: 6.0 },
 
     sim: {
       playing: false,
       speedMult: 1,
       tHours: 0,
 
-      // Slower sim: 1 sec real = 15 sec simulated at 1×
+      // 1 sec real = 15 sec sim at 1×
       baseHoursPerSec: 1/240,
 
       trailEveryMin: 2,
       lastTrailMin: 0,
 
-      // Current contact position in kyd (integrated forward)
       contactNavKyd: {x:0,y:0},
       trailPtsKyd: []
     }
   };
 
+  // In triangle space, R is the "reference/guide" point and M is the "moving" point.
+  // Speed mode:    R = own true,   M = other true,  RM = other - own
+  // Stationing:    R = guide true, M = own true,    RM = own - guide
+  function triRShip(){ return (state.mode==='stationing') ? state.tgt : state.own; }
+  function triMShip(){ return (state.mode==='stationing') ? state.own : state.tgt; }
+
+  // Control panels:
+  // Speed:   Panel A = Own,   Panel B = Other
+  // Station: Panel A = Guide, Panel B = Own
+  function panelAShip(){ return (state.mode==='stationing') ? state.tgt : state.own; }
+  function panelBShip(){ return (state.mode==='stationing') ? state.own : state.tgt; }
+  function panelALabel(){ return (state.mode==='stationing') ? 'Guide / True Vector' : 'Own / True Vector'; }
+  function panelBLabel(){ return (state.mode==='stationing') ? 'Own Ship / True Vector' : 'Other Ship / Guide Vector'; }
+  function markerLabel(){
+    return (state.mode==='stationing') ? 'Initial Own Position (relative to guide)' : 'Initial Contact Position';
+  }
+  function markerNote(){
+    return (state.mode==='stationing')
+      ? 'This marker represents <b>our ship</b> relative to the guide at the center (kyd).'
+      : 'This marker represents the <b>contact</b> relative to own ship at the center (kyd).';
+  }
+
   function contactInitialNavKyd(){
     const u = courseToVec(state.contact0.brg);
     return { x: u.x*state.contact0.rngKyd, y: u.y*state.contact0.rngKyd };
-  }
-
-  function setTgtPosNavFromPolar(){
-    const u = courseToVec(state.tgtPos.brg);
-    state.tgtPosNavKyd = { x: u.x * state.tgtPos.rngKyd, y: u.y * state.tgtPos.rngKyd };
-  }
-
-  function setTgtPosPolarFromNav(nav){
-    const rng = clamp(mag(nav.x, nav.y), 0, 60);
-    const brg = rng>1e-9 ? vecToCourse(nav.x, nav.y) : state.tgtPos.brg;
-    state.tgtPos = { brg: ((Math.round(brg)%360)+360)%360, rngKyd: rng };
-    setTgtPosNavFromPolar();
   }
 
   function resetSim(){
@@ -446,6 +458,13 @@
     state.sim.lastTrailMin = 0;
     state.sim.contactNavKyd = contactInitialNavKyd();
     state.sim.trailPtsKyd = [ { ...state.sim.contactNavKyd } ];
+  }
+
+  function pauseIfPlaying(){
+    if(!state.sim.playing) return;
+    state.sim.playing = false;
+    playPause.textContent = 'Play';
+    playPause.classList.add('primary');
   }
 
   // ---------- DOM ----------
@@ -468,6 +487,12 @@
 
   const speedNote = document.getElementById('speedNote');
 
+  const ownBoxTitle = document.getElementById('ownBoxTitle');
+  const tgtBoxTitle = document.getElementById('tgtBoxTitle');
+  const contactBoxTitle = document.getElementById('contactBoxTitle');
+  const contactBoxNote = document.getElementById('contactBoxNote');
+
+  // NOTE: these input IDs remain the same, but we repoint them to different ships when in stationing mode.
   const ownCNum = document.getElementById('ownCNum');
   const ownS = document.getElementById('ownS');
   const ownSNum = document.getElementById('ownSNum');
@@ -475,10 +500,6 @@
   const tgtCNum = document.getElementById('tgtCNum');
   const tgtS = document.getElementById('tgtS');
   const tgtSNum = document.getElementById('tgtSNum');
-  const tgtB = document.getElementById('tgtB');
-  const tgtBNum = document.getElementById('tgtBNum');
-  const tgtR = document.getElementById('tgtR');
-  const tgtRNum = document.getElementById('tgtRNum');
 
   const ctB = document.getElementById('ctB');
   const ctBNum = document.getElementById('ctBNum');
@@ -498,7 +519,6 @@
   const trail = document.getElementById('trail');
 
   const ptE = document.getElementById('ptE');
-  const ptMBase = document.getElementById('ptMBase');
   const ptR = document.getElementById('ptR');
   const ptM = document.getElementById('ptM');
   const labE = document.getElementById('labE');
@@ -512,7 +532,7 @@
   const ro4 = document.getElementById('ro4');
 
   // ---------- Course Dial ----------
-  function makeCourseDial(containerId, getCourse, setCourse, colorVar){
+  function makeCourseDial(containerId, getCourse, setCourse, getColor){
     const size = 100, r = 44, cx = size/2, cy = size/2;
     const wrap = document.getElementById(containerId);
     wrap.innerHTML = `
@@ -520,8 +540,8 @@
         <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--grid)" stroke-width="3" opacity="0.9"/>
         <circle cx="${cx}" cy="${cy}" r="${r-10}" fill="none" stroke="var(--grid)" stroke-width="1.5" opacity="0.5"/>
         <line id="needle" x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy-r+6}"
-              stroke="${colorVar}" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="${cx}" cy="${cy}" r="5" fill="${colorVar}" />
+              stroke="var(--text)" stroke-width="4" stroke-linecap="round"/>
+        <circle id="hub" cx="${cx}" cy="${cy}" r="5" fill="var(--text)" />
         <text x="${cx}" y="${cy+6}" text-anchor="middle" font-size="12" fill="var(--muted)">COURSE</text>
         <text id="read" x="${cx}" y="${cy-18}" text-anchor="middle" font-size="14" fill="var(--text)" font-weight="650">000</text>
       </svg>
@@ -529,8 +549,12 @@
     const svgEl = wrap.querySelector('svg');
     const needle = wrap.querySelector('#needle');
     const read = wrap.querySelector('#read');
+    const hub = wrap.querySelector('#hub');
 
     const update = () => {
+      const color = getColor();
+      needle.setAttribute('stroke', color);
+      hub.setAttribute('fill', color);
       const c = ((Math.round(getCourse())%360)+360)%360;
       read.textContent = String(c).padStart(3,'0');
       const rad = (c*Math.PI)/180;
@@ -579,24 +603,27 @@
 
   const ownDial = makeCourseDial(
     'ownDial',
-    ()=>state.own.c,
-    (v)=>{ state.own.c = ((Math.round(v)%360)+360)%360; ownCNum.value = state.own.c; render(); },
-    'var(--own)'
+    ()=>panelAShip().c,
+    (v)=>{ panelAShip().c = ((Math.round(v)%360)+360)%360; ownCNum.value = panelAShip().c; render(); },
+    ()=> (state.mode==='stationing' ? 'var(--tgt)' : 'var(--own)')
   );
   const tgtDial = makeCourseDial(
     'tgtDial',
-    ()=>state.tgt.c,
-    (v)=>{ state.tgt.c = ((Math.round(v)%360)+360)%360; tgtCNum.value = state.tgt.c; render(); },
-    'var(--tgt)'
+    ()=>panelBShip().c,
+    (v)=>{ panelBShip().c = ((Math.round(v)%360)+360)%360; tgtCNum.value = panelBShip().c; render(); },
+    ()=> (state.mode==='stationing' ? 'var(--own)' : 'var(--tgt)')
   );
 
   // ---------- Rates and Display Vectors ----------
   function computeRatesKydHr(){
-    const oU = courseToVec(state.own.c);
-    const tU = courseToVec(state.tgt.c);
+    const Rship = triRShip();
+    const Mship = triMShip();
 
-    const Rrate = { x: oU.x*state.own.s*KNOT_TO_KYD_PER_HR, y: oU.y*state.own.s*KNOT_TO_KYD_PER_HR }; // kyd/hr
-    const Mrate = { x: tU.x*state.tgt.s*KNOT_TO_KYD_PER_HR, y: tU.y*state.tgt.s*KNOT_TO_KYD_PER_HR }; // kyd/hr
+    const rU = courseToVec(Rship.c);
+    const mU = courseToVec(Mship.c);
+
+    const Rrate = { x: rU.x*Rship.s*KNOT_TO_KYD_PER_HR, y: rU.y*Rship.s*KNOT_TO_KYD_PER_HR }; // kyd/hr
+    const Mrate = { x: mU.x*Mship.s*KNOT_TO_KYD_PER_HR, y: mU.y*Mship.s*KNOT_TO_KYD_PER_HR }; // kyd/hr
     const RMrate = { x: Mrate.x - Rrate.x, y: Mrate.y - Rrate.y }; // kyd/hr
     return { e:{x:0,y:0}, Rrate, Mrate, RMrate };
   }
@@ -625,21 +652,30 @@
     // Geometry outer radius in kyd stays fixed (10 kyd); labels scale independently.
     const outerKyd = ringCount;
 
-    // 1) Radial dotted lines every 10 degrees with labels centered on the radial
+    // 1) Radial dotted lines every 10° and bearing labels OUTSIDE the outer ring.
+    //    Cardinal bearings (000/090/180/270) are emphasized and share the same label ring.
+    const labelKyd = outerKyd + 0.65;
+
     for(let deg=0; deg<360; deg+=10){
       const u = courseToVec(deg);
-      const p1s = navToSvg({ x:u.x*outerKyd, y:u.y*outerKyd }, pxPerKyd);
+
+      const pEnd = navToSvg({ x:u.x*outerKyd, y:u.y*outerKyd }, pxPerKyd);
+
+      const isCardinal = (deg % 90 === 0);
+      const isThirty = (deg % 30 === 0);
 
       const ln = document.createElementNS("http://www.w3.org/2000/svg","line");
       ln.setAttribute('x1',0); ln.setAttribute('y1',0);
-      ln.setAttribute('x2',p1s.x); ln.setAttribute('y2',p1s.y);
+      ln.setAttribute('x2',pEnd.x); ln.setAttribute('y2',pEnd.y);
       ln.setAttribute('stroke','var(--grid)');
-      ln.setAttribute('stroke-width', (deg%30===0) ? '1.4' : '1.0');
-      ln.setAttribute('opacity', (deg%30===0) ? '0.55' : '0.28');
-      ln.setAttribute('stroke-dasharray', (deg%30===0) ? '4 6' : '2 7');
+      ln.setAttribute('stroke-width', isCardinal ? '2.2' : (isThirty ? '1.4' : '1.0'));
+      ln.setAttribute('opacity', isCardinal ? '0.70' : (isThirty ? '0.50' : '0.28'));
+      if(!isCardinal){
+        ln.setAttribute('stroke-dasharray', isThirty ? '4 6' : '2 7');
+      }
       scopeG.appendChild(ln);
 
-      const labelKyd = outerKyd + 0.35;
+      // Bearing label outside the last ring (combined with cardinal scheme)
       const pLab = navToSvg({ x:u.x*labelKyd, y:u.y*labelKyd }, pxPerKyd);
 
       const tx = document.createElementNS("http://www.w3.org/2000/svg","text");
@@ -647,9 +683,9 @@
       tx.setAttribute('y', pLab.y);
       tx.setAttribute('text-anchor','middle');
       tx.setAttribute('dominant-baseline','middle');
-      tx.setAttribute('font-size', (deg%30===0) ? '11' : '10');
+      tx.setAttribute('font-size', isCardinal ? '12' : '10');
       tx.setAttribute('fill','var(--muted)');
-      tx.setAttribute('opacity', (deg%30===0) ? '0.85' : '0.5');
+      tx.setAttribute('opacity', isCardinal ? '0.92' : '0.60');
       tx.textContent = String(deg).padStart(3,'0');
       scopeG.appendChild(tx);
     }
@@ -673,27 +709,12 @@
       t.setAttribute('y', -radiusPx + 14);
       t.setAttribute('font-size','12');
       t.setAttribute('fill','var(--muted)');
+      t.setAttribute('opacity','0.85');
       t.textContent = `${labelVal}`;
       scopeG.appendChild(t);
     }
-
-    // 3) Cardinal ticks at outer ring
-    const cardinals = [0, 90, 180, 270];
-
-    cardinals.forEach((deg)=>{
-      const u = courseToVec(deg);
-      const p1 = navToSvg({x:u.x*outerKyd, y:u.y*outerKyd}, pxPerKyd);
-      const p0 = navToSvg({x:u.x*(outerKyd-0.6), y:u.y*(outerKyd-0.6)}, pxPerKyd);
-
-      const ln = document.createElementNS("http://www.w3.org/2000/svg","line");
-      ln.setAttribute('x1',p0.x); ln.setAttribute('y1',p0.y);
-      ln.setAttribute('x2',p1.x); ln.setAttribute('y2',p1.y);
-      ln.setAttribute('stroke','var(--grid)');
-      ln.setAttribute('stroke-width','2');
-      ln.setAttribute('opacity','0.95');
-      scopeG.appendChild(ln);
-    });
   }
+
 
   // ---------- Rendering ----------
   function setLine(el,a,b){
@@ -721,19 +742,28 @@
       legTgt.textContent='e→R = guide (true)';
       flag.setAttribute('opacity','1');
     }
+
+    // Swap panel labels and marker label/note
+    ownBoxTitle.textContent = panelALabel();
+    tgtBoxTitle.textContent = panelBLabel();
+    contactBoxTitle.textContent = markerLabel();
+    contactBoxNote.innerHTML = markerNote();
   }
 
   function render(){
+    // Sync settings
     rangeScaleSel.value = String(state.rangeScale);
     ringPxNum.value = state.ringPx;
 
-    ownCNum.value = state.own.c;
-    ownS.value = state.own.s; ownSNum.value = state.own.s;
+    // Panel ship bindings (swap in stationing)
+    const A = panelAShip();
+    const B = panelBShip();
 
-    tgtCNum.value = state.tgt.c;
-    tgtS.value = state.tgt.s; tgtSNum.value = state.tgt.s;
-    tgtB.value = state.tgtPos.brg; tgtBNum.value = state.tgtPos.brg;
-    tgtR.value = state.tgtPos.rngKyd; tgtRNum.value = state.tgtPos.rngKyd;
+    ownCNum.value = A.c;
+    ownS.value = A.s; ownSNum.value = A.s;
+
+    tgtCNum.value = B.c;
+    tgtS.value = B.s; tgtSNum.value = B.s;
 
     ctB.value = state.contact0.brg; ctBNum.value = state.contact0.brg;
     ctR.value = state.contact0.rngKyd; ctRNum.value = state.contact0.rngKyd;
@@ -752,27 +782,27 @@
 
     const {e, R, M, RM, RMrate} = computeDisplayVectorsKyd();
 
-    const tgtBaseNav = state.tgtPosNavKyd;
-    const mBaseSvg = navToSvg(tgtBaseNav, pxPerKyd);
-    const mTipNav = { x: tgtBaseNav.x + M.x, y: tgtBaseNav.y + M.y };
-    const mTipSvg = navToSvg(mTipNav, pxPerKyd);
-
     const eS = navToSvg(e, pxPerKyd);
     const rS = navToSvg(R, pxPerKyd);
-    const mS = mTipSvg;
+    const mS = navToSvg(M, pxPerKyd);
 
     setCircle(ptE,eS); setCircle(ptR,rS); setCircle(ptM,mS);
-    setLabel(labE,eS,'e'); setLabel(labR,rS,'R'); setLabel(labM,mS,'M');
+    setLabel(labE,eS,'e');
+    setLabel(labR,rS, state.mode==='stationing' ? 'M' : 'R');
+    setLabel(labM,mS, state.mode==='stationing' ? 'R' : 'M');
     flag.setAttribute('transform',`translate(${eS.x},${eS.y})`);
 
+    // Color semantics:
+    // Speed mode: R is own (green), M is other (red)
+    // Stationing: R is guide (red), M is own (green)
     if(state.mode==='speed'){
-      setLine(lineER,eS,rS); setLine(lineEM,mBaseSvg,mS);
+      setLine(lineER,eS,rS); setLine(lineEM,eS,mS);
       lineER.setAttribute('stroke','var(--own)'); lineER.setAttribute('marker-end','url(#arrowOwn)');
       lineEM.setAttribute('stroke','var(--tgt)'); lineEM.setAttribute('marker-end','url(#arrowTgt)');
       ptR.setAttribute('fill','var(--own)');
       ptM.setAttribute('fill','var(--tgt)');
     }else{
-      setLine(lineER,eS,rS); setLine(lineEM,mBaseSvg,mS);
+      setLine(lineER,eS,rS); setLine(lineEM,eS,mS);
       lineER.setAttribute('stroke','var(--tgt)'); lineER.setAttribute('marker-end','url(#arrowTgt)');
       lineEM.setAttribute('stroke','var(--own)'); lineEM.setAttribute('marker-end','url(#arrowOwn)');
       ptR.setAttribute('fill','var(--tgt)');
@@ -784,19 +814,29 @@
     const relKts = relRateKydHr / KNOT_TO_KYD_PER_HR;
     const relC = relRateKydHr>1e-9 ? vecToCourse(RMrate.x,RMrate.y) : 0;
 
-    ro1.textContent = `Own: C ${fmtCourse(state.own.c)}, S ${state.own.s.toFixed(1)} kts`;
-    ro2.textContent = `Other: C ${fmtCourse(state.tgt.c)}, S ${state.tgt.s.toFixed(1)} kts`;
+    // Readouts match mode semantics
+    if(state.mode==='speed'){
+      ro1.textContent = `Own: C ${fmtCourse(state.own.c)}, S ${state.own.s.toFixed(1)} kts`;
+      ro2.textContent = `Other: C ${fmtCourse(state.tgt.c)}, S ${state.tgt.s.toFixed(1)} kts`;
+      ro4.textContent = `Contact0: Brg ${fmtCourse(state.contact0.brg)}, Rng ${state.contact0.rngKyd.toFixed(1)} kyd`;
+    }else{
+      ro1.textContent = `Guide: C ${fmtCourse(state.tgt.c)}, S ${state.tgt.s.toFixed(1)} kts`;
+      ro2.textContent = `Own: C ${fmtCourse(state.own.c)}, S ${state.own.s.toFixed(1)} kts`;
+      ro4.textContent = `Own0: Brg ${fmtCourse(state.contact0.brg)}, Rng ${state.contact0.rngKyd.toFixed(1)} kyd (relative to guide)`;
+    }
     ro3.textContent = `Relative: C ${fmtCourse(relC)}, S ${relKts.toFixed(1)} kts (vectors = ${VECTOR_TIME_MIN} min)`;
-    ro4.textContent = `Contact0: Brg ${fmtCourse(state.contact0.brg)}, Rng ${state.contact0.rngKyd.toFixed(1)} kyd`;
 
+    // Marker position (integrated) in kyd
     const ctSvg = navToSvg(state.sim.contactNavKyd, pxPerKyd);
     setCircle(ct, ctSvg);
     setLine(bearingLine, eS, ctSvg);
 
+    // Relative vector copy anchored at marker (same 6-minute distance used for triangle)
     const ctRelEndNav = { x: state.sim.contactNavKyd.x + RM.x, y: state.sim.contactNavKyd.y + RM.y };
     const ctRelEndSvg = navToSvg(ctRelEndNav, pxPerKyd);
     setLine(ctRel, ctSvg, ctRelEndSvg);
 
+    // Trail
     const pts = state.sim.trailPtsKyd.map(p => {
       const s = navToSvg(p, pxPerKyd);
       return `${s.x.toFixed(1)},${s.y.toFixed(1)}`;
@@ -805,7 +845,13 @@
   }
 
   // ---------- UI events ----------
-  modeSel.addEventListener('change', ()=>{ state.mode = modeSel.value; render(); });
+  modeSel.addEventListener('change', ()=>{
+    pauseIfPlaying();
+    state.mode = modeSel.value;
+    // Keep the same physical marker position when switching modes (don’t jump it).
+    // We only relabel what it means.
+    render();
+  });
 
   rangeScaleSel.addEventListener('change', ()=>{
     state.rangeScale = clamp(parseInt(rangeScaleSel.value,10)||1, 1, 5);
@@ -821,22 +867,29 @@
     numEl.addEventListener('input', ()=>onChange(parseFloat(numEl.value)));
   }
 
-  bindPair(ownS, ownSNum, (v)=>{ state.own.s = clamp(v,0,35); render(); });
-  bindPair(tgtS, tgtSNum, (v)=>{ state.tgt.s = clamp(v,0,35); render(); });
-  bindPair(tgtB, tgtBNum, (v)=>{ state.tgtPos.brg = ((Math.round(v)%360)+360)%360; setTgtPosNavFromPolar(); resetSim(); render(); });
-  bindPair(tgtR, tgtRNum, (v)=>{ state.tgtPos.rngKyd = clamp(v,0,60); setTgtPosNavFromPolar(); resetSim(); render(); });
+  // Panel A speed
+  bindPair(ownS, ownSNum, (v)=>{
+    panelAShip().s = clamp(v,0,35);
+    render();
+  });
+  // Panel B speed
+  bindPair(tgtS, tgtSNum, (v)=>{
+    panelBShip().s = clamp(v,0,35);
+    render();
+  });
 
+  // Panel A course numeric
   ownCNum.addEventListener('input', ()=>{
-    state.own.c = ((Math.round(parseFloat(ownCNum.value)||0)%360)+360)%360;
-    ownDial.update();
+    panelAShip().c = ((Math.round(parseFloat(ownCNum.value)||0)%360)+360)%360;
     render();
   });
+  // Panel B course numeric
   tgtCNum.addEventListener('input', ()=>{
-    state.tgt.c = ((Math.round(parseFloat(tgtCNum.value)||0)%360)+360)%360;
-    tgtDial.update();
+    panelBShip().c = ((Math.round(parseFloat(tgtCNum.value)||0)%360)+360)%360;
     render();
   });
 
+  // Marker inputs change marker initial position and reset sim
   bindPair(ctB, ctBNum, (v)=>{ state.contact0.brg = ((Math.round(v)%360)+360)%360; resetSim(); render(); });
   bindPair(ctR, ctRNum, (v)=>{ state.contact0.rngKyd = clamp(v,0,60); resetSim(); render(); });
 
@@ -874,8 +927,7 @@
   stepBack.addEventListener('click', ()=>step(-1));
   stepFwd.addEventListener('click', ()=>step(1));
 
-  // ---------- Dragging R/M sets course & speed ----------
-  let dragging = null; // 'R' | 'M' | 'MB'
+  // ---------- Pointer helpers ----------
   function svgPointFromEvent(evt){
     const pt = svg.createSVGPoint();
     pt.x = evt.clientX; pt.y = evt.clientY;
@@ -883,64 +935,88 @@
     return { x: p.x, y: p.y };
   }
 
-  function applyDrag(which, pSvg, snap5){
+  // ---------- Dragging R/M sets course & speed ----------
+  let dragging = null; // 'R' | 'M' | 'CT'
+
+  function applyDragVector(which, pSvg, snap5){
     const pxPerKyd = kydToPxFactor();
     const pNav = svgToNav(pSvg, pxPerKyd); // kyd
+    const distKyd = clamp(mag(pNav.x,pNav.y), 0, 35 * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR);
 
-    const anchor = (which==='M') ? state.tgtPosNavKyd : {x:0,y:0};
-    const relNav = { x: pNav.x - anchor.x, y: pNav.y - anchor.y };
-    const distKyd = clamp(mag(relNav.x,relNav.y), 0, 35 * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR);
-
-    let crs = distKyd > 1e-9 ? vecToCourse(relNav.x,relNav.y) : 0;
+    let crs = distKyd > 1e-9 ? vecToCourse(pNav.x,pNav.y) : 0;
     if(snap5) crs = Math.round(crs/5)*5;
 
     const spKts = distKyd / (KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR);
     const spKtsSnapped = Math.round(spKts * 2) / 2;
 
-    const vecUnit = courseToVec(crs);
-    const vecNav = {
-      x: vecUnit.x * spKtsSnapped * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR,
-      y: vecUnit.y * spKtsSnapped * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR
-    };
+    // Which ship does R/M correspond to depends on mode
+    const ship = (which==='R')
+      ? triRShip()
+      : triMShip();
 
-    if(which==='R'){
-      state.own.c = ((Math.round(crs)%360)+360)%360;
-      state.own.s = spKtsSnapped;
-    } else {
-      state.tgt.c = ((Math.round(crs)%360)+360)%360;
-      state.tgt.s = spKtsSnapped;
+    ship.c = ((Math.round(crs)%360)+360)%360;
+    ship.s = spKtsSnapped;
 
-      const newPos = { x: pNav.x - vecNav.x, y: pNav.y - vecNav.y };
-      setTgtPosPolarFromNav(newPos);
-      resetSim();
-    }
+    render();
+  }
+
+  function applyDragMarker(pSvg){
+    // Dragging marker sets instantaneous marker position + updates bearing/range fields.
+    const pxPerKyd = kydToPxFactor();
+    const pNav = svgToNav(pSvg, pxPerKyd); // kyd
+
+    const rng = clamp(mag(pNav.x,pNav.y), 0, 60);
+    const brg = rng > 1e-9 ? vecToCourse(pNav.x, pNav.y) : 0;
+
+    state.contact0.brg = ((Math.round(brg)%360)+360)%360;
+    state.contact0.rngKyd = rng;
+
+    // Set current marker position and restart trail at this position (no "teleport line")
+    state.sim.tHours = 0;
+    state.sim.lastTrailMin = 0;
+    state.sim.contactNavKyd = { x: pNav.x, y: pNav.y };
+    state.sim.trailPtsKyd = [ { ...state.sim.contactNavKyd } ];
+
     render();
   }
 
   function startDrag(which, evt){
     dragging = which;
     evt.preventDefault();
+
+    // Any drag interaction pauses playback to prevent jitter/teleporting.
+    pauseIfPlaying();
+
     svg.setPointerCapture?.(evt.pointerId);
     if(which==='R') ptR.setAttribute('cursor','grabbing');
     if(which==='M') ptM.setAttribute('cursor','grabbing');
-    if(which==='MB') ptMBase.setAttribute('cursor','grabbing');
+    if(which==='CT') ct.setAttribute('cursor','grabbing');
   }
+
   function endDrag(evt){
     dragging = null;
     ptR.setAttribute('cursor','grab');
     ptM.setAttribute('cursor','grab');
-    ptMBase.setAttribute('cursor','grab');
+    ct.setAttribute('cursor','grab');
     try{ svg.releasePointerCapture?.(evt.pointerId); }catch(e){}
   }
 
   ptR.addEventListener('pointerdown',(e)=>startDrag('R',e));
   ptM.addEventListener('pointerdown',(e)=>startDrag('M',e));
-  ptMBase.addEventListener('pointerdown',(e)=>startDrag('MB',e));
+  ct.addEventListener('pointerdown',(e)=>startDrag('CT',e));
+  ct.setAttribute('cursor','grab');
+
   svg.addEventListener('pointermove',(evt)=>{
     if(!dragging) return;
     const p = svgPointFromEvent(evt);
-    applyDrag(dragging, p, evt.shiftKey);
+
+    if(dragging==='CT'){
+      applyDragMarker(p);
+      return;
+    }
+    applyDragVector(dragging, p, evt.shiftKey);
   });
+
   svg.addEventListener('pointerup', endDrag);
   svg.addEventListener('pointercancel', endDrag);
   svg.addEventListener('pointerleave', (evt)=>{ if(dragging) endDrag(evt); });
@@ -973,7 +1049,6 @@
   }
 
   // ---------- Init ----------
-  setTgtPosNavFromPolar();
   resetSim();
   render();
   requestAnimationFrame(tick);
