@@ -329,6 +329,7 @@
 
       <g>
         <circle id="ptE" cx="0" cy="0" r="6" fill="#ffffff"/>
+        <circle id="ptMBase" cx="0" cy="0" r="6" fill="#ffffff" stroke="#0b0f14" stroke-width="2" cursor="grab" opacity="0.85"/>
         <circle id="ptR" cx="0" cy="0" r="7" fill="var(--own)" stroke="#0b0f14" stroke-width="2" cursor="grab"/>
         <circle id="ptM" cx="0" cy="0" r="7" fill="var(--tgt)" stroke="#0b0f14" stroke-width="2" cursor="grab"/>
       </g>
@@ -497,6 +498,7 @@
   const trail = document.getElementById('trail');
 
   const ptE = document.getElementById('ptE');
+  const ptMBase = document.getElementById('ptMBase');
   const ptR = document.getElementById('ptR');
   const ptM = document.getElementById('ptM');
   const labE = document.getElementById('labE');
@@ -873,7 +875,7 @@
   stepFwd.addEventListener('click', ()=>step(1));
 
   // ---------- Dragging R/M sets course & speed ----------
-  let dragging = null; // 'R' | 'M'
+  let dragging = null; // 'R' | 'M' | 'MB'
   function svgPointFromEvent(evt){
     const pt = svg.createSVGPoint();
     pt.x = evt.clientX; pt.y = evt.clientY;
@@ -921,16 +923,19 @@
     svg.setPointerCapture?.(evt.pointerId);
     if(which==='R') ptR.setAttribute('cursor','grabbing');
     if(which==='M') ptM.setAttribute('cursor','grabbing');
+    if(which==='MB') ptMBase.setAttribute('cursor','grabbing');
   }
   function endDrag(evt){
     dragging = null;
     ptR.setAttribute('cursor','grab');
     ptM.setAttribute('cursor','grab');
+    ptMBase.setAttribute('cursor','grab');
     try{ svg.releasePointerCapture?.(evt.pointerId); }catch(e){}
   }
 
   ptR.addEventListener('pointerdown',(e)=>startDrag('R',e));
   ptM.addEventListener('pointerdown',(e)=>startDrag('M',e));
+  ptMBase.addEventListener('pointerdown',(e)=>startDrag('MB',e));
   svg.addEventListener('pointermove',(evt)=>{
     if(!dragging) return;
     const p = svgPointFromEvent(evt);
