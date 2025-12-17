@@ -237,6 +237,16 @@
             <input id="tgtS" type="range" min="0" max="35" step="0.5" value="10" />
             <input id="tgtSNum" type="number" min="0" max="35" step="0.5" value="10" />
           </div>
+          <div class="row">
+            <label>Bearing (°T)</label>
+            <input id="tgtB" type="range" min="0" max="359" step="1" value="0" />
+            <input id="tgtBNum" type="number" min="0" max="359" step="1" value="0" />
+          </div>
+          <div class="row">
+            <label>Range (kyd)</label>
+            <input id="tgtR" type="range" min="0" max="60" step="0.1" value="0" />
+            <input id="tgtRNum" type="number" min="0" max="60" step="0.1" value="0" />
+          </div>
           <div class="dialHint">Drag the needle to set course.</div>
         </div>
       </div>
@@ -392,6 +402,8 @@
 
     own: { c: 90, s: 5 },   // knots
     tgt: { c: 45, s: 10 },  // knots
+    tgtPos: { brg: 0, rngKyd: 0 },
+    tgtPosNavKyd: {x:0,y:0},
     contact0: { brg: 320, rngKyd: 6.0 }, // initial contact range in kyd
 
     sim: {
@@ -414,6 +426,18 @@
   function contactInitialNavKyd(){
     const u = courseToVec(state.contact0.brg);
     return { x: u.x*state.contact0.rngKyd, y: u.y*state.contact0.rngKyd };
+  }
+
+  function setTgtPosNavFromPolar(){
+    const u = courseToVec(state.tgtPos.brg);
+    state.tgtPosNavKyd = { x: u.x * state.tgtPos.rngKyd, y: u.y * state.tgtPos.rngKyd };
+  }
+
+  function setTgtPosPolarFromNav(nav){
+    const rng = clamp(mag(nav.x, nav.y), 0, 60);
+    const brg = rng>1e-9 ? vecToCourse(nav.x, nav.y) : state.tgtPos.brg;
+    state.tgtPos = { brg: ((Math.round(brg)%360)+360)%360, rngKyd: rng };
+    setTgtPosNavFromPolar();
   }
 
   function resetSim(){
@@ -450,6 +474,10 @@
   const tgtCNum = document.getElementById('tgtCNum');
   const tgtS = document.getElementById('tgtS');
   const tgtSNum = document.getElementById('tgtSNum');
+  const tgtB = document.getElementById('tgtB');
+  const tgtBNum = document.getElementById('tgtBNum');
+  const tgtR = document.getElementById('tgtR');
+  const tgtRNum = document.getElementById('tgtRNum');
 
   const ctB = document.getElementById('ctB');
   const ctBNum = document.getElementById('ctBNum');
@@ -702,6 +730,8 @@
 
     tgtCNum.value = state.tgt.c;
     tgtS.value = state.tgt.s; tgtSNum.value = state.tgt.s;
+    tgtB.value = state.tgtPos.brg; tgtBNum.value = state.tgtPos.brg;
+    tgtR.value = state.tgtPos.rngKyd; tgtRNum.value = state.tgtPos.rngKyd;
 
     ctB.value = state.contact0.brg; ctBNum.value = state.contact0.brg;
     ctR.value = state.contact0.rngKyd; ctRNum.value = state.contact0.rngKyd;
@@ -720,22 +750,27 @@
 
     const {e, R, M, RM, RMrate} = computeDisplayVectorsKyd();
 
+    const tgtBaseNav = state.tgtPosNavKyd;
+    const mBaseSvg = navToSvg(tgtBaseNav, pxPerKyd);
+    const mTipNav = { x: tgtBaseNav.x + M.x, y: tgtBaseNav.y + M.y };
+    const mTipSvg = navToSvg(mTipNav, pxPerKyd);
+
     const eS = navToSvg(e, pxPerKyd);
     const rS = navToSvg(R, pxPerKyd);
-    const mS = navToSvg(M, pxPerKyd);
+    const mS = mTipSvg;
 
     setCircle(ptE,eS); setCircle(ptR,rS); setCircle(ptM,mS);
     setLabel(labE,eS,'e'); setLabel(labR,rS,'R'); setLabel(labM,mS,'M');
     flag.setAttribute('transform',`translate(${eS.x},${eS.y})`);
 
     if(state.mode==='speed'){
-      setLine(lineER,eS,rS); setLine(lineEM,eS,mS);
+      setLine(lineER,eS,rS); setLine(lineEM,mBaseSvg,mS);
       lineER.setAttribute('stroke','var(--own)'); lineER.setAttribute('marker-end','url(#arrowOwn)');
       lineEM.setAttribute('stroke','var(--tgt)'); lineEM.setAttribute('marker-end','url(#arrowTgt)');
       ptR.setAttribute('fill','var(--own)');
       ptM.setAttribute('fill','var(--tgt)');
     }else{
-      setLine(lineER,eS,rS); setLine(lineEM,eS,mS);
+      setLine(lineER,eS,rS); setLine(lineEM,mBaseSvg,mS);
       lineER.setAttribute('stroke','var(--tgt)'); lineER.setAttribute('marker-end','url(#arrowTgt)');
       lineEM.setAttribute('stroke','var(--own)'); lineEM.setAttribute('marker-end','url(#arrowOwn)');
       ptR.setAttribute('fill','var(--tgt)');
@@ -786,6 +821,8 @@
 
   bindPair(ownS, ownSNum, (v)=>{ state.own.s = clamp(v,0,35); render(); });
   bindPair(tgtS, tgtSNum, (v)=>{ state.tgt.s = clamp(v,0,35); render(); });
+  bindPair(tgtB, tgtBNum, (v)=>{ state.tgtPos.brg = ((Math.round(v)%360)+360)%360; setTgtPosNavFromPolar(); resetSim(); render(); });
+  bindPair(tgtR, tgtRNum, (v)=>{ state.tgtPos.rngKyd = clamp(v,0,60); setTgtPosNavFromPolar(); resetSim(); render(); });
 
   ownCNum.addEventListener('input', ()=>{
     state.own.c = ((Math.round(parseFloat(ownCNum.value)||0)%360)+360)%360;
@@ -847,13 +884,22 @@
   function applyDrag(which, pSvg, snap5){
     const pxPerKyd = kydToPxFactor();
     const pNav = svgToNav(pSvg, pxPerKyd); // kyd
-    const distKyd = clamp(mag(pNav.x,pNav.y), 0, 35 * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR);
 
-    let crs = distKyd > 1e-9 ? vecToCourse(pNav.x,pNav.y) : 0;
+    const anchor = (which==='M') ? state.tgtPosNavKyd : {x:0,y:0};
+    const relNav = { x: pNav.x - anchor.x, y: pNav.y - anchor.y };
+    const distKyd = clamp(mag(relNav.x,relNav.y), 0, 35 * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR);
+
+    let crs = distKyd > 1e-9 ? vecToCourse(relNav.x,relNav.y) : 0;
     if(snap5) crs = Math.round(crs/5)*5;
 
     const spKts = distKyd / (KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR);
     const spKtsSnapped = Math.round(spKts * 2) / 2;
+
+    const vecUnit = courseToVec(crs);
+    const vecNav = {
+      x: vecUnit.x * spKtsSnapped * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR,
+      y: vecUnit.y * spKtsSnapped * KNOT_TO_KYD_PER_HR * VECTOR_TIME_HR
+    };
 
     if(which==='R'){
       state.own.c = ((Math.round(crs)%360)+360)%360;
@@ -861,6 +907,10 @@
     } else {
       state.tgt.c = ((Math.round(crs)%360)+360)%360;
       state.tgt.s = spKtsSnapped;
+
+      const newPos = { x: pNav.x - vecNav.x, y: pNav.y - vecNav.y };
+      setTgtPosPolarFromNav(newPos);
+      resetSim();
     }
     render();
   }
@@ -918,6 +968,7 @@
   }
 
   // ---------- Init ----------
+  setTgtPosNavFromPolar();
   resetSim();
   render();
   requestAnimationFrame(tick);
